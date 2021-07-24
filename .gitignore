@@ -1,8 +1,10 @@
-*.js
-!jest.config.js
-*.d.ts
+# Built files and Node Modules
+build
 node_modules
 
 # CDK asset staging directory
 .cdk.staging
 cdk.out
+
+# Don't ignore files inside site directory (unless site/.gitignore says so).
+!/site/**/*
