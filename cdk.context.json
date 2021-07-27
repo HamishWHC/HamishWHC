@@ -1,0 +1,9 @@
+{
+    "prod": {
+        "urls": [
+            "hamishwhc.com"
+        ],
+        "hostedZoneId": "",
+        "cdnCertArn": ""
+    }
+}

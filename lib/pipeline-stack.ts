@@ -1,5 +1,6 @@
 import * as cdk from '@aws-cdk/core';
-import {CodePipeline, CodePipelineSource, ShellStep} from '@aws-cdk/pipelines';
+import {CodeBuildStep, CodePipeline, CodePipelineSource, ShellStep} from '@aws-cdk/pipelines';
+import {SiteStage} from './site-stage';
 
 export class PipelineStack extends cdk.Stack {
     constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
@@ -12,7 +13,7 @@ export class PipelineStack extends cdk.Stack {
             // How it will be built and synthesized
             synth: new ShellStep('Synth', {
                 // Where the source can be found
-                input: CodePipelineSource.gitHub('HamishWHC/hamishwhc.com', 'master'),
+                input: CodePipelineSource.gitHub('HamishWHC/HamishWHC', 'master'),
 
                 // Install dependencies, build and run cdk synth
                 commands: [
@@ -23,7 +24,6 @@ export class PipelineStack extends cdk.Stack {
             }),
         });
 
-        // This is where we add the application stages
-        // ...
+        pipeline.addStage(new SiteStage(this, 'Prod'));
     }
 }
