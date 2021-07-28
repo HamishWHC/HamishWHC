@@ -18,6 +18,7 @@ export const adapter = ({out}) => ({
             format: 'cjs',
             platform: 'node',
             target: 'node14',
+            inject: [path.join(files, 'shims.js')],
             define: {
                 esbuild_app_dir: '"' + config.kit.appDir + '"'
             }
