@@ -1,13 +1,17 @@
 {
-    "prod": {
-        "urls": [
-            "hamishwhc.com",
-            "www.hamishwhc.com"
-        ],
-        "hostedZoneAttributes": {
-            "hostedZoneId": "Z10302691TWKL9F1WZ0H7",
-            "zoneName": "hamishwhc.com"
-        },
-        "cdnCertArn": "arn:aws:acm:us-east-1:319320589528:certificate/0015ff53-ff19-4640-a4b5-32cab0948974"
-    }
+    "stages": {
+        "prod": {
+            "urls": [
+                "hamishwhc.com",
+                "www.hamishwhc.com"
+            ],
+            "hostedZoneAttributes": {
+                "hostedZoneId": "Z10302691TWKL9F1WZ0H7",
+                "zoneName": "hamishwhc.com"
+            },
+            "cdnCertArn": "arn:aws:acm:us-east-1:319320589528:certificate/0015ff53-ff19-4640-a4b5-32cab0948974"
+        }
+    },
+    "githubTokenSecretArn": "arn:aws:secretsmanager:ap-southeast-2:319320589528:secret:github-token-w6YHyn",
+    "dockerhubLoginSecretArn": "arn:aws:secretsmanager:ap-southeast-2:319320589528:secret:dockerhub-login-cootJM"
 }

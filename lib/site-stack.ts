@@ -14,7 +14,7 @@ import {RemovalPolicy} from '@aws-cdk/core';
 import * as fs from "fs";
 import * as path from "path";
 
-interface SiteStackProps extends cdk.StackProps {
+export interface SiteStackProps extends cdk.StackProps {
     urls?: string[]
     cdnCertArn?: string
     hostedZoneAttributes?: HostedZoneAttributes,
