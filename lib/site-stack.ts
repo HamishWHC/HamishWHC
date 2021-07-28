@@ -4,7 +4,7 @@ import {Certificate} from '@aws-cdk/aws-certificatemanager';
 import {Behavior, CloudFrontAllowedMethods, CloudFrontWebDistribution, Distribution, HttpVersion, OriginAccessIdentity, OriginProtocolPolicy, OriginRequestPolicy, PriceClass, ViewerCertificate, ViewerProtocolPolicy} from '@aws-cdk/aws-cloudfront';
 import {HttpOrigin, OriginGroup, S3Origin} from '@aws-cdk/aws-cloudfront-origins';
 import {AssetCode, Function, Runtime} from '@aws-cdk/aws-lambda';
-import {AaaaRecord, ARecord, HostedZone, RecordTarget} from '@aws-cdk/aws-route53';
+import {AaaaRecord, ARecord, HostedZone, HostedZoneAttributes, RecordTarget} from '@aws-cdk/aws-route53';
 import {CloudFrontTarget} from '@aws-cdk/aws-route53-targets';
 import {Bucket} from '@aws-cdk/aws-s3';
 import {Asset} from '@aws-cdk/aws-s3-assets';
@@ -17,7 +17,7 @@ import * as path from "path";
 interface SiteStackProps extends cdk.StackProps {
     urls?: string[]
     cdnCertArn?: string
-    hostedZoneId?: string
+    hostedZoneAttributes?: HostedZoneAttributes
 }
 
 export class SiteStack extends cdk.Stack {
@@ -95,8 +95,8 @@ export class SiteStack extends cdk.Stack {
             distribution: siteCdn
         });
 
-        if (props.hostedZoneId && props.urls) {
-            const hostedZone = HostedZone.fromHostedZoneId(this, 'CDNHostedZone', props.hostedZoneId);
+        if (props.hostedZoneAttributes && props.urls) {
+            const hostedZone = HostedZone.fromHostedZoneAttributes(this, 'CDNHostedZone', props.hostedZoneAttributes);
 
             props.urls.forEach(url => {
                 new ARecord(this, `CDNRecord-${url}-A`, {
