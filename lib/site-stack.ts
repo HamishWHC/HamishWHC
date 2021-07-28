@@ -81,6 +81,7 @@ export class SiteStack extends cdk.Stack {
                 viewerProtocolPolicy: ViewerProtocolPolicy.REDIRECT_TO_HTTPS
             },
             certificate: cdnCert,
+            defaultRootObject: "index.html",
             logBucket,
             logFilePrefix: "site-cdn/",
             domainNames: props.urls

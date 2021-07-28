@@ -22,7 +22,7 @@ export async function handler(event) {
         body: JSON.parse(event.body), // TODO: other payload types
         headers,
         query,
-        path,
+        path: path.endsWith("index.html") ? path.replace(/index\.html$/, "") : path
     })
 
     if (rendered) {
