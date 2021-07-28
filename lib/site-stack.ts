@@ -66,7 +66,7 @@ export class SiteStack extends cdk.Stack {
                     fallbackOrigin: new HttpOrigin(
                         cdk.Fn.parseDomainName(api.apiEndpoint),
                         {
-                            originPath: `/${api.defaultStage?.stageName}`, // ???
+                            originPath: `/${api.defaultStage?.stageName}`,
                             protocolPolicy: OriginProtocolPolicy.HTTPS_ONLY,
                         }
                     ),

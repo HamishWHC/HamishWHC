@@ -1,9 +1,10 @@
 {
     "prod": {
         "urls": [
-            "hamishwhc.com"
+            "hamishwhc.com",
+            "www.hamishwhc.com"
         ],
-        "hostedZoneId": "",
-        "cdnCertArn": ""
+        "hostedZoneId": "Z10302691TWKL9F1WZ0H7",
+        "cdnCertArn": "arn:aws:acm:us-east-1:319320589528:certificate/0015ff53-ff19-4640-a4b5-32cab0948974"
     }
 }
