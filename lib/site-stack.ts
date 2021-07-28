@@ -56,13 +56,17 @@ export class SiteStack extends cdk.Stack {
             autoDeleteObjects: true,
             removalPolicy: RemovalPolicy.DESTROY
         });
+        const originAccessIdentity = new OriginAccessIdentity(this, 'OAI');
+        siteBucket.grantRead(originAccessIdentity);
 
         const cdnCert = props.cdnCertArn && props.urls ? Certificate.fromCertificateArn(this, "CloudfrontCert", props.cdnCertArn) : undefined
 
         const siteCdn = new Distribution(this, "SiteCloudFront", {
             defaultBehavior: {
                 origin: new OriginGroup({
-                    primaryOrigin: new S3Origin(siteBucket),
+                    primaryOrigin: new S3Origin(siteBucket, {
+                        originAccessIdentity
+                    }),
                     fallbackOrigin: new HttpOrigin(
                         cdk.Fn.parseDomainName(api.apiEndpoint),
                         {
