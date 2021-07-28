@@ -113,16 +113,3 @@ export class SiteStack extends cdk.Stack {
         }
     }
 }
-
-const mkStaticRoutes = (staticPath: string): Behavior[] => {
-    return fs.readdirSync(staticPath).map(f => {
-        const fullPath = path.join(staticPath, f)
-        const stat = fs.statSync(fullPath)
-        if (stat.isDirectory()) {
-            return {
-                pathPattern: `/${f}/*`,
-            }
-        }
-        return {pathPattern: `/${f}`}
-    })
-}
