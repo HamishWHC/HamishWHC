@@ -25,6 +25,8 @@ export class PipelineStack extends cdk.Stack {
                     'npx cdk synth'
                 ],
             }),
+            
+            dockerEnabledForSynth: true
         });
 
         pipeline.addStage(new SiteStage(this, 'Prod'));
