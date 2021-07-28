@@ -17,7 +17,8 @@ import * as path from "path";
 interface SiteStackProps extends cdk.StackProps {
     urls?: string[]
     cdnCertArn?: string
-    hostedZoneAttributes?: HostedZoneAttributes
+    hostedZoneAttributes?: HostedZoneAttributes,
+    stageName: string
 }
 
 export class SiteStack extends cdk.Stack {
@@ -38,7 +39,9 @@ export class SiteStack extends cdk.Stack {
             runtime: Runtime.NODEJS_14_X,
         })
 
-        const api = new HttpApi(this, 'Api')
+        const api = new HttpApi(this, 'Api', {
+            apiName: `HamishWHC-Api-${props.stageName}`
+        })
         api.addRoutes({
             path: '/{proxy+}',
             methods: [HttpMethod.ANY],
@@ -70,7 +73,6 @@ export class SiteStack extends cdk.Stack {
                     fallbackOrigin: new HttpOrigin(
                         cdk.Fn.parseDomainName(api.apiEndpoint),
                         {
-                            originPath: `/${api.defaultStage?.stageName}`,
                             protocolPolicy: OriginProtocolPolicy.HTTPS_ONLY,
                         }
                     ),

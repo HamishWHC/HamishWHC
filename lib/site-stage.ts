@@ -10,8 +10,9 @@ export class SiteStage extends Stage {
   constructor(scope: Construct, id: string, props?: StageProps) {
     super(scope, id, props);
 
-    new SiteStack(this, `hamishwhc-SiteStack-${id}`, {
-        ...this.node.tryGetContext(id.toLowerCase())
+    new SiteStack(this, `hamishwhc-SiteStack`, {
+        ...this.node.tryGetContext(id.toLowerCase()),
+        stageName: id
     });
   }
 }
