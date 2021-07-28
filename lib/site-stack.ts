@@ -30,7 +30,7 @@ export class SiteStack extends cdk.Stack {
                 {
                     bundling: {
                         image: cdk.DockerImage.fromRegistry("node:14"),
-                        command: ["npm", "run", "build", "&&", "cp", "-r", "site/build/lambda", "/asset-output"]
+                        command: ["npm", "run", "cdk-docker-build-lambda"]
                     }
                 }
             ),
@@ -86,7 +86,7 @@ export class SiteStack extends cdk.Stack {
                 Source.asset(path.join(__dirname, "../site"), {
                     bundling: {
                         image: new cdk.DockerImage("node:14"),
-                        command: ["npm", "run", "build", "&&", "cp", "-r", "site/build/static", "/asset-output"]
+                        command: ["npm", "run", "cdk-docker-build-static"]
                     }
                 })
             ],
