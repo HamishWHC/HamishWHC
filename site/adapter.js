@@ -15,7 +15,7 @@ export const adapter = ({out}) => ({
             outfile: path.join(out, 'lambda/index.js'),
             bundle: true,
             external: Object.keys(JSON.parse(fs.readFileSync('package.json', 'utf8')).dependencies || {}),
-            format: 'esm',
+            format: 'cjs',
             platform: 'node',
             target: 'node14',
             define: {
