@@ -1,5 +1,8 @@
 .DS_Store
 node_modules
-/.svelte-kit
 /build
-/.npm-cache
+/.svelte-kit
+/package
+.env
+.env.*
+!.env.example

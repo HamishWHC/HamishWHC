@@ -24,31 +24,6 @@ export class SiteStack extends cdk.Stack {
     constructor(scope: Construct, id: string, props: SiteStackProps) {
         super(scope, id, props);
 
-        const handler = new Function(this, 'handler', {
-            code: AssetCode.fromAsset(
-                path.join(__dirname, "../site"),
-                {
-                    bundling: {
-                        image: cdk.DockerImage.fromRegistry("node:14"),
-                        command: ["npm", "run", "cdk-docker-build-lambda"]
-                    }
-                }
-            ),
-            handler: 'index.handler',
-            runtime: Runtime.NODEJS_14_X,
-        })
-
-        const api = new HttpApi(this, 'Api', {
-            apiName: `HamishWHC-Api-${props.stageName}`
-        })
-        api.addRoutes({
-            path: '/{proxy+}',
-            methods: [HttpMethod.ANY],
-            integration: new HttpLambdaIntegration("LambdaIntegration", handler, {
-                payloadFormatVersion: PayloadFormatVersion.VERSION_1_0,
-            })
-        })
-
         const logBucket = new Bucket(this, "LogsBucket");
 
         const siteBucket = new Bucket(this, "SiteBucket", {
@@ -64,17 +39,8 @@ export class SiteStack extends cdk.Stack {
 
         const siteCdn = new Distribution(this, "SiteCloudFront", {
             defaultBehavior: {
-                origin: new OriginGroup({
-                    primaryOrigin: new S3Origin(siteBucket, {
-                        originAccessIdentity
-                    }),
-                    fallbackOrigin: new HttpOrigin(
-                        cdk.Fn.parseDomainName(api.apiEndpoint),
-                        {
-                            protocolPolicy: OriginProtocolPolicy.HTTPS_ONLY,
-                        }
-                    ),
-                    fallbackStatusCodes: [404],
+                origin: new S3Origin(siteBucket, {
+                    originAccessIdentity
                 }),
                 viewerProtocolPolicy: ViewerProtocolPolicy.REDIRECT_TO_HTTPS
             },
@@ -90,7 +56,14 @@ export class SiteStack extends cdk.Stack {
                 Source.asset(path.join(__dirname, "../site"), {
                     bundling: {
                         image: new cdk.DockerImage("node:14"),
-                        command: ["npm", "run", "cdk-docker-build-static"]
+                        command: [
+                            "bash", "-c", [
+                                "export npm_config_cache=$(mktemp -d)",
+                                "npm ci",
+                                "npm run build",
+                                "cp -r build/* /asset-output"
+                            ].join(" && ")
+                        ],
                     }
                 })
             ],
