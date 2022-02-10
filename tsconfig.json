@@ -27,6 +27,7 @@
   "exclude": [
     "node_modules",
     "cdk.out",
-    "site"
+    "site",
+    "build"
   ]
 }

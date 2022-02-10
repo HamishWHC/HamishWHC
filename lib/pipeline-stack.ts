@@ -1,11 +1,11 @@
-import {Secret} from '@aws-cdk/aws-secretsmanager';
-import * as cdk from '@aws-cdk/core';
-import {SecretValue} from '@aws-cdk/core';
-import {CodeBuildStep, CodePipeline, CodePipelineSource, DockerCredential, ShellStep} from '@aws-cdk/pipelines';
-import {SiteStage} from './site-stage';
+import {Secret} from 'aws-cdk-lib/aws-secretsmanager'
+import * as cdk from 'aws-cdk-lib'
+import {CodePipeline, CodePipelineSource, DockerCredential, ShellStep} from 'aws-cdk-lib/pipelines'
+import {Construct} from "constructs"
+import {SiteStage} from './site-stage'
 
 export class PipelineStack extends cdk.Stack {
-    constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
+    constructor(scope: Construct, id: string, props?: cdk.StackProps) {
         super(scope, id, props);
 
         const gitHubSecret = Secret.fromSecretCompleteArn(this, 'GitHubSecret', this.node.tryGetContext("gitHubTokenSecretArn"));

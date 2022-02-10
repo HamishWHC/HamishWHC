@@ -1,18 +1,17 @@
-import {HttpApi, HttpMethod, PayloadFormatVersion} from '@aws-cdk/aws-apigatewayv2';
-import {LambdaProxyIntegration} from '@aws-cdk/aws-apigatewayv2-integrations';
-import {Certificate} from '@aws-cdk/aws-certificatemanager';
-import {Behavior, CloudFrontAllowedMethods, CloudFrontWebDistribution, Distribution, HttpVersion, OriginAccessIdentity, OriginProtocolPolicy, OriginRequestPolicy, PriceClass, ViewerCertificate, ViewerProtocolPolicy} from '@aws-cdk/aws-cloudfront';
-import {HttpOrigin, OriginGroup, S3Origin} from '@aws-cdk/aws-cloudfront-origins';
-import {AssetCode, Function, Runtime} from '@aws-cdk/aws-lambda';
-import {AaaaRecord, ARecord, HostedZone, HostedZoneAttributes, RecordTarget} from '@aws-cdk/aws-route53';
-import {CloudFrontTarget} from '@aws-cdk/aws-route53-targets';
-import {Bucket} from '@aws-cdk/aws-s3';
-import {Asset} from '@aws-cdk/aws-s3-assets';
-import {BucketDeployment, Source} from '@aws-cdk/aws-s3-deployment';
-import * as cdk from '@aws-cdk/core';
-import {RemovalPolicy} from '@aws-cdk/core';
-import * as fs from "fs";
-import * as path from "path";
+import {HttpApi, HttpMethod, PayloadFormatVersion} from '@aws-cdk/aws-apigatewayv2-alpha'
+import {HttpLambdaIntegration} from '@aws-cdk/aws-apigatewayv2-integrations-alpha'
+import {Certificate} from 'aws-cdk-lib/aws-certificatemanager'
+import {Distribution, OriginAccessIdentity, OriginProtocolPolicy, ViewerProtocolPolicy} from 'aws-cdk-lib/aws-cloudfront'
+import {HttpOrigin, OriginGroup, S3Origin} from 'aws-cdk-lib/aws-cloudfront-origins'
+import {AssetCode, Function, Runtime} from 'aws-cdk-lib/aws-lambda'
+import {AaaaRecord, ARecord, HostedZone, HostedZoneAttributes, RecordTarget} from 'aws-cdk-lib/aws-route53'
+import {CloudFrontTarget} from 'aws-cdk-lib/aws-route53-targets'
+import {Bucket} from 'aws-cdk-lib/aws-s3'
+import {BucketDeployment, Source} from 'aws-cdk-lib/aws-s3-deployment'
+import * as cdk from 'aws-cdk-lib'
+import {RemovalPolicy} from 'aws-cdk-lib'
+import {Construct} from "constructs"
+import * as path from "path"
 
 export interface SiteStackProps extends cdk.StackProps {
     urls?: string[]
@@ -22,7 +21,7 @@ export interface SiteStackProps extends cdk.StackProps {
 }
 
 export class SiteStack extends cdk.Stack {
-    constructor(scope: cdk.Construct, id: string, props: SiteStackProps) {
+    constructor(scope: Construct, id: string, props: SiteStackProps) {
         super(scope, id, props);
 
         const handler = new Function(this, 'handler', {
@@ -45,8 +44,7 @@ export class SiteStack extends cdk.Stack {
         api.addRoutes({
             path: '/{proxy+}',
             methods: [HttpMethod.ANY],
-            integration: new LambdaProxyIntegration({
-                handler,
+            integration: new HttpLambdaIntegration("LambdaIntegration", handler, {
                 payloadFormatVersion: PayloadFormatVersion.VERSION_1_0,
             })
         })

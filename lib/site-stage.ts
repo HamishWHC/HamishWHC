@@ -1,4 +1,5 @@
-import {CfnOutput, Construct, Stage, StageProps} from '@aws-cdk/core';
+import {CfnOutput, Stage, StageProps} from 'aws-cdk-lib';
+import {Construct} from "constructs"
 import {SiteStack, SiteStackProps} from './site-stack';
 
 /**
